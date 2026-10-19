@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<title>JUJU Sports AI</title>
+<style>
+:root{--bg:#0b1220;--panel:#121d2e;--panel2:#172438;--line:#26364d;--text:#eef4ff;--muted:#9fb0c8;--green:#39d98a;--blue:#79aaff;--amber:#ffd166;--red:#ff7d86}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#14233a 0,#0b1220 55%);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 15px;font-weight:750;background:var(--green);color:#07150f}button:disabled{opacity:.5;cursor:wait}.wrap{max-width:960px;margin:auto;padding:18px 14px 40px}.top{display:flex;align-items:center;gap:12px;margin:5px 0 18px}.logo{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,#39d98a,#6ea8ff);color:#06121c;font-size:25px;font-weight:950}.brand{font-size:25px;font-weight:900;letter-spacing:-.8px}.sub{color:var(--muted);font-size:13px}.pill{margin-left:auto;border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted)}.hero{background:linear-gradient(135deg,#183c39,#172943 70%);border:1px solid #31545a;border-radius:20px;padding:20px;margin-bottom:15px}.hero h1{font-size:25px;line-height:1.15;margin:0 0 9px}.hero p{color:#c2d4e8;margin:0 0 15px}.grid{display:grid;grid-template-columns:1fr;gap:14px}.card{background:rgba(18,29,46,.96);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}.card h2{font-size:17px;margin:0 0 12px}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}.field label{font-size:12px;color:var(--muted);font-weight:700}.field input,.field select{width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);background:#0b1423;color:var(--text);outline:none}.field input:focus,.field select:focus{border-color:var(--blue)}.secondary{background:#243650;color:var(--text)}.outline{background:transparent;border:1px solid var(--line);color:var(--text)}.status{padding:11px 12px;border-radius:12px;background:#0b1423;color:var(--muted);font-size:13px;margin-top:10px;overflow-wrap:anywhere}.status.ok{color:var(--green)}.status.err{color:var(--red)}.small{font-size:12px;color:var(--muted)}.match{padding:14px 0;border-top:1px solid var(--line)}.match:first-child{border-top:0}.matchhead{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;margin-bottom:9px}.teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:9px;font-weight:800}.teams .away{text-align:right}.vs{color:var(--muted);font-size:12px}.pred{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.pred div{background:#0b1423;border:1px solid var(--line);border-radius:11px;padding:9px 7px;text-align:center}.pred strong{display:block;font-size:16px;color:var(--green)}.pred span{display:block;font-size:10px;color:var(--muted);margin-bottom:4px}.match-actions{display:flex;justify-content:flex-end;margin-top:9px}.tag{font-size:10px;border-radius:6px;padding:3px 6px;background:#243650;color:#c4d6ed}.empty{text-align:center;padding:25px 8px;color:var(--muted)}.notice{border-left:3px solid var(--amber);padding:10px 12px;background:#2a2518;color:#f4dfaa;border-radius:0 10px 10px 0;font-size:12px;margin-top:12px}.hidden{display:none!important}.historyitem{padding:10px 0;border-top:1px solid var(--line);font-size:13px}.footer{text-align:center;color:var(--muted);font-size:11px;padding:16px}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}.hero{padding:26px}.hero h1{font-size:32px}.wrap{padding-top:24px}.card{padding:19px}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="top"><div class="logo">J</div><div><div class="brand">JUJU Sports AI</div><div class="sub">Football insights · evidence-led estimates</div></div><div class="pill">BETA · NO BETTING</div></header>
+<section class="hero"><h1>Make every match easier to understand.</h1><p>Upcoming fixtures, recent results and estimated match probabilities — in one simple dashboard.</p><button id="loadBtn">Load fixtures & analyse</button></section>
+<section class="card">
+<h2>1. Connect football data</h2>
+<p class="small">This version uses football-data.org. Create a free account and copy your API token. Free access includes selected competitions and may have delayed scores, so this is not guaranteed real-time coverage.</p>
+<div class="field"><label for="token">API token</label><input id="token" type="password" autocomplete="off" placeholder="Paste your football-data.org token"></div>
+<div class="row"><div class="field"><label for="league">Competition</label><select id="league"><option value="PL">Premier League</option><option value="PD">La Liga</option><option value="BL1">Bundesliga</option><option value="SA">Serie A</option><option value="FL1">Ligue 1</option><option value="CL">UEFA Champions League</option><option value="DED">Eredivisie</option><option value="PPL">Primeira Liga</option><option value="ELC">Championship</option><option value="BSA">Brazil Serie A</option></select></div><div class="field"><label for="days">Fixture window</label><select id="days"><option value="7">Next 7 days</option><option value="14" selected>Next 14 days</option><option value="30">Next 30 days</option></select></div></div>
+<div class="row"><button id="saveBtn" class="secondary">Save token on this device</button><button id="clearBtn" class="outline">Forget token</button></div>
+<div id="status" class="status">Not connected. Enter your token, then load fixtures.</div>
+<div class="notice">Security: the token is used directly in this browser and can be inspected by someone with access to your device. Never put your token in the public GitHub code. This is suitable for personal testing, not a public multi-user service.</div>
+</section>
+<div class="grid"><section class="card"><h2>2. Upcoming matches</h2><div id="matches"><div class="empty">Connect your data token to load fixtures.</div></div></section>
+<section class="card"><h2>3. Prediction history</h2><p class="small">Saved on this device only. Track outcomes yourself after matches finish.</p><div id="history"><div class="empty">No saved predictions yet.</div></div><button id="clearHistory" class="outline">Clear history</button></section></div>
+<section class="card"><h2>How estimates work</h2><p class="small">The first version estimates home/away scoring rates from recent completed matches available in the selected competition window, then uses a simple Poisson goal model to calculate home win, draw, away win, over 2.5 goals and both-teams-to-score probabilities. Small samples are marked as limited evidence. These are statistical estimates, not AI certainty, bookmaker odds or guarantees.</p></section>
+<div class="footer">JUJU Sports AI · For information and learning only · Never bet money you cannot afford to lose.</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const API='https://api.football-data.org/v4';
+let matches=[], history=[];
+try{history=JSON.parse(localStorage.getItem('juju_history')||'[]')}catch(e){history=[]}
+const savedToken=localStorage.getItem('juju_token'); if(savedToken)$('token').value=savedToken;
+renderHistory();
+function setStatus(msg,type=''){ $('status').textContent=msg; $('status').className='status '+type; }
+function dateOnly(d){return d.toISOString().slice(0,10)}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('saveBtn').onclick=()=>{const t=$('token').value.trim();if(!t){setStatus('Paste your API token first.','err');return}localStorage.setItem('juju_token',t);setStatus('Token saved on this device only.','ok')};
+$('clearBtn').onclick=()=>{localStorage.removeItem('juju_token');$('token').value='';setStatus('Saved token removed from this browser.');};
+$('loadBtn').onclick=loadMatches;
+$('clearHistory').onclick=()=>{history=[];localStorage.removeItem('juju_history');renderHistory()};
+async function api(path,token){const r=await fetch(API+path,{headers:{'X-Auth-Token':token}});if(!r.ok){let m='HTTP '+r.status;if(r.status===403)m='Access denied: check token and whether this competition is included in your plan.';if(r.status===429)m='API rate limit reached. Wait a little and try again.';throw new Error(m)}return r.json()}
+async function loadMatches(){
+ const token=$('token').value.trim(); if(!token){setStatus('Enter your football-data.org API token first.','err');return}
+ $('loadBtn').disabled=true;$('matches').innerHTML='<div class="empty">Loading fixtures and recent results…</div>';setStatus('Connecting to football-data.org…');
+ try{
+  const now=new Date(), end=new Date(now.getTime()+Number($('days').value)*86400000), past=new Date(now.getTime()-35*86400000);
+  const comp=$('league').value;
+  const url=`/matches?competitions=${encodeURIComponent(comp)}&dateFrom=${dateOnly(past)}&dateTo=${dateOnly(end)}`;
+  const data=await api(url,token);
+  matches=(data.matches||[]).sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
+  if(!matches.length){$('matches').innerHTML='<div class="empty">No matches returned for this competition and date window. Try another competition or date range.</div>';setStatus('Connected, but no matches were returned.','ok');return}
+  renderMatches();setStatus(`Connected. Loaded ${matches.length} fixtures/results for ${$('league').selectedOptions[0].text}. Scores and schedules may be delayed by the provider plan.`,'ok');
+ }catch(e){$('matches').innerHTML='<div class="empty">Could not load data.</div>';setStatus(e.message+' Check internet access and your API token.','err')}
+ finally{$('loadBtn').disabled=false}
+}
+function poisson(lambda,k){let p=Math.exp(-lambda);for(let i=1;i<=k;i++)p*=lambda/i;return p}
+function analyse(m){
+ const done=matches.filter(x=>x.status==='FINISHED'&&x.score?.fullTime?.home!=null&&x.score?.fullTime?.away!=null);
+ const home=m.homeTeam?.id, away=m.awayTeam?.id;
+ const hGames=done.filter(x=>x.homeTeam?.id===home||x.awayTeam?.id===home).slice(-8);
+ const aGames=done.filter(x=>x.homeTeam?.id===away||x.awayTeam?.id===away).slice(-8);
+ function rates(g,id){let scored=0,conceded=0,n=0;for(const x of g){const isHome=x.homeTeam.id===id;const gf=isHome?x.score.fullTime.home:x.score.fullTime.away;const ga=isHome?x.score.fullTime.away:x.score.fullTime.home;if(Number.isFinite(gf)&&Number.isFinite(ga)){scored+=gf;conceded+=ga;n++}}return {gf:n?scored/n:1.25,ga:n?conceded/n:1.25,n}}
+ const hr=rates(hGames,home),ar=rates(aGames,away);
+ const leagueGoals=done.length?done.reduce((s,x)=>s+(x.score.fullTime.home+x.score.fullTime.away),0)/(2*done.length):1.35;
+ const homeAdv=Math.max(.75,Math.min(1.3,1.08));
+ const lh=Math.max(.15,Math.min(3.5,((hr.gf||leagueGoals)+(ar.ga||leagueGoals))/2*homeAdv));
+ const la=Math.max(.15,Math.min(3.5,((ar.gf||leagueGoals)+(hr.ga||leagueGoals))/2/homeAdv));
+ let hw=0,dr=0,aw=0,over=0,btts=0,total=0;
+ for(let i=0;i<=8;i++)for(let j=0;j<=8;j++){const p=poisson(lh,i)*poisson(la,j);total+=p;if(i>j)hw+=p;else if(i===j)dr+=p;else aw+=p;if(i+j>=3)over+=p;if(i>0&&j>0)btts+=p}
+ const scale=100/total;
+ return {hw:hw*scale,dr:dr*scale,aw:aw*scale,over:over*scale,btts:btts*scale,lh,la,n:Math.min(hr.n,ar.n),sampleH:hr.n,sampleA:ar.n};
+}
+function pct(n){return Math.round(n)+'%'}
+function renderMatches(){
+ const upcoming=matches.filter(m=>['SCHEDULED','TIMED','IN_PLAY','PAUSED'].includes(m.status));
+ const list=upcoming.length?upcoming:matches.filter(m=>m.status==='FINISHED').slice(-10).reverse();
+ if(!list.length){$('matches').innerHTML='<div class="empty">No upcoming or completed matches found.</div>';return}
+ $('matches').innerHTML=list.map(m=>{
+  const p=analyse(m),date=new Date(m.utcDate),isLive=['IN_PLAY','PAUSED'].includes(m.status);
+  const score=m.score?.fullTime;
+  const scoreText=m.status==='FINISHED'&&score?` · ${score.home}-${score.away}`:'';
+  const limited=p.n<3?'<div class="small" style="margin-top:8px;color:#ffd166">Limited evidence: fewer than 3 recent matches for at least one team.</div>':'';
+  return `<article class="match"><div class="matchhead"><span>${escapeHtml(m.competition?.name||$('league').selectedOptions[0].text)} · ${escapeHtml(m.status)}${scoreText}</span><span>${date.toLocaleDateString()} ${date.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div><div class="teams"><div>${escapeHtml(m.homeTeam?.name)}</div><div class="vs">VS</div><div class="away">${escapeHtml(m.awayTeam?.name)}</div></div><div class="pred"><div><span>HOME / DRAW / AWAY</span><strong>${pct(p.hw)} / ${pct(p.dr)} / ${pct(p.aw)}</strong></div><div><span>OVER 2.5 GOALS</span><strong>${pct(p.over)}</strong></div><div><span>BOTH SCORE</span><strong>${pct(p.btts)}</strong></div></div><div class="small" style="margin-top:9px">Estimated goals: ${p.lh.toFixed(1)} – ${p.la.toFixed(1)} · Recent matches used: ${p.sampleH} home-team / ${p.sampleA} away-team</div>${limited}<div class="match-actions"><button class="secondary" onclick="savePrediction('${String(m.id)}')">Save prediction</button></div></article>`;
+ }).join('');
+}
+function savePrediction(id){
+ const m=matches.find(x=>String(x.id)===String(id));if(!m)return;const p=analyse(m);
+ history.unshift({id:m.id,home:m.homeTeam.name,away:m.awayTeam.name,date:m.utcDate,homeP:Math.round(p.hw),drawP:Math.round(p.dr),awayP:Math.round(p.aw),overP:Math.round(p.over),bttsP:Math.round(p.btts),savedAt:new Date().toISOString()});
+ history=history.slice(0,50);localStorage.setItem('juju_history',JSON.stringify(history));renderHistory();
+}
+function renderHistory(){if(!history.length){$('history').innerHTML='<div class="empty">No saved predictions yet.</div>';return}$('history').innerHTML=history.map(h=>`<div class="historyitem"><strong>${escapeHtml(h.home)} vs ${escapeHtml(h.away)}</strong><div class="small">${new Date(h.date).toLocaleDateString()} · Saved ${new Date(h.savedAt).toLocaleDateString()}</div><div class="small">H/D/A ${h.homeP}/${h.drawP}/${h.awayP}% · Over 2.5 ${h.overP}% · Both score ${h.bttsP}%</div></div>`).join('')}
+</script></body></html>
