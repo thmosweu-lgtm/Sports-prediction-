@@ -48,7 +48,6 @@ async function loadMatches(){
  $('loadBtn').disabled=true;$('matches').innerHTML='<div class="empty">Loading fixtures and recent results…</div>';setStatus('Connecting to football-data.org…');
  try{
   const now=new Date(), end=new Date(now.getTime()+Number($('days').value)*86400000), past=new Date(now.getTime()-35*86400000);
-  const comp=$('league').value;
   const url=`/matches?competitions=${encodeURIComponent(comp)}&dateFrom=${dateOnly(past)}&dateTo=${dateOnly(end)}`;
   const data=await api(url,token);
   matches=(data.matches||[]).sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
